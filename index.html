@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이성민 | 포트폴리오</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --green:        #6EE27B;
+      --green-dark:   #3EC94D;
+      --green-pale:   #EDFBEF;
+      --green-mid:    #C8F5CD;
+      --bg-hero:      #6EE27B;
+      --bg-about:     #FFFFFF;
+      --bg-activity:  #F7F7F5;
+      --bg-project:   #1A1A1A;
+      --bg-gallery:   #FFFFFF;
+      --bg-video:     #F0FBF2;
+      --bg-contact:   #1A1A1A;
+      --text-dark:    #111111;
+      --text-mid:     #444444;
+      --text-light:   #888888;
+      --text-white:   #FFFFFF;
+      --text-ongreen: #0D4013;
+      --border:       #E2E2E2;
+      --border-dark:  #2E2E2E;
+      --font:         'Noto Sans KR', 'DM Sans', sans-serif;
+      --font-en:      'DM Sans', sans-serif;
+      --max:          960px;
+      --nav-h:        60px;      /* ← 앵커 오프셋 기준 */
+      --pad-section:  96px;
+      --radius:       4px;
+    }
+
+    /* ── 리셋 ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font); color: var(--text-dark); line-height: 1.7; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ── 앵커 스크롤 오프셋 (fixed nav 가림 방지) ── */
+    section[id], footer[id] { scroll-margin-top: var(--nav-h); }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+    .section-label {
+      font-family: var(--font-en);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: var(--text-light);
+    }
+    .section-label.green { color: var(--green-dark); }
+    .section-label.light { color: var(--green); }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 48px;
+    }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    #site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      height: var(--nav-h);
+    }
+    #site-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+    #nav-logo {
+      font-family: var(--font-en);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #nav-logo::before {
+      content: '';
+      width: 10px; height: 10px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    #nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    #nav-menu a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+    }
+    #nav-menu a:hover { color: var(--text-dark); border-bottom-color: var(--green); }
+
+    /* 관리자 버튼 */
+    #admin-nav-btn {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text-light);
+      font-family: var(--font);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    #admin-nav-btn:hover { border-color: var(--green-dark); color: var(--green-dark); }
+    #admin-nav-btn.active { background: var(--green); border-color: var(--green); color: var(--text-ongreen); }
+
+    /* 햄버거 (모바일) */
+    #nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    #nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--text-dark);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    #nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    #nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* 모바일 드롭다운 */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(255,255,255,0.97);
+      border-bottom: 1px solid var(--border);
+      z-index: 299;
+      flex-direction: column;
+      padding: 16px 32px 20px;
+      gap: 16px;
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    #mobile-menu a:last-child { border-bottom: none; }
+
+    /* ── 관리자 바 (로그인 후 하단 고정) ── */
+    #admin-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 300;
+      background: var(--green);
+      color: var(--text-ongreen);
+      height: 52px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    #admin-bar.visible { display: flex; }
+    #admin-bar .bar-msg { display: flex; align-items: center; gap: 8px; }
+    #admin-bar .bar-msg::before { content: '✏️'; font-size: 1rem; }
+    .bar-actions { display: flex; gap: 10px; }
+    .bar-btn {
+      background: rgba(0,0,0,0.12);
+      border: none;
+      color: var(--text-ongreen);
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .bar-btn:hover { background: rgba(0,0,0,0.22); }
+    .bar-btn.logout { background: rgba(0,0,0,0.2); }
+
+    /* ── 편집 모드: 수정 가능한 요소 표시 ── */
+    body.edit-mode [contenteditable="true"] {
+      outline: 2px dashed rgba(62,201,77,0.6);
+      outline-offset: 3px;
+      cursor: text;
+      border-radius: 2px;
+      min-height: 1em;
+    }
+    body.edit-mode [contenteditable="true"]:focus {
+      outline-color: var(--green-dark);
+      background: rgba(237,251,239,0.5);
+    }
+    body.edit-mode .upload-zone {
+      cursor: pointer !important;
+      outline: 2px dashed rgba(62,201,77,0.5);
+    }
+    body.edit-mode .upload-zone:hover { outline-color: var(--green-dark); }
+
+    /* ── 알림 토스트 ── */
+    #toast {
+      position: fixed;
+      top: 76px; right: 24px;
+      background: var(--text-dark);
+      color: #fff;
+      font-size: 0.82rem;
+      padding: 10px 20px;
+      border-radius: 6px;
+      z-index: 400;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    #toast.show { opacity: 1; }
+
+    /* ── 로그인 모달 ── */
+    #login-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+    }
+    #login-overlay.open { display: flex; }
+    #login-modal {
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 36px 36px;
+      border-radius: 8px;
+      position: relative;
+    }
+    #login-modal h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    #login-modal p { font-size: 0.88rem; color: var(--text-light); margin-bottom: 28px; }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .modal-field label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-light); }
+    .modal-field input {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      font-family: var(--font);
+      font-size: 0.95rem;
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-field input:focus { border-color: var(--green-dark); }
+    #login-error {
+      font-size: 0.8rem;
+      color: #D93025;
+      margin: -4px 0 12px;
+      display: none;
+    }
+    .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      font-family: var(--font);
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: var(--radius);
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .modal-btn.primary { background: var(--green); color: var(--text-ongreen); }
+    .modal-btn.secondary { background: #f0f0f0; color: var(--text-mid); }
+    #login-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none; border: none;
+      font-size: 1.3rem; color: var(--text-light);
+      cursor: pointer; line-height: 1;
+    }
+
+    /* ── 숨김 파일 입력 ── */
+    .hidden-file { display: none !important; }
+
+    /* ============================================================
+       01. HERO
+    ============================================================ */
+    #section-hero {
+      background: var(--bg-hero);
+      padding: 120px 0 80px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #section-hero::after {
+      content: '✦';
+      position: absolute;
+      right: 10%; top: 30%;
+      font-size: 3rem;
+      color: var(--text-ongreen);
+      opacity: 0.2;
+      animation: spin 12s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero-inner { display: flex; flex-direction: column; gap: 22px; }
+    .hero-eyebrow {
+      font-family: var(--font-en);
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--text-ongreen); opacity: 0.7;
+    }
+    #hero-name {
+      font-family: var(--font-en);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 700; line-height: 0.95;
+      color: var(--text-dark); letter-spacing: -0.03em;
+    }
+    .hero-portfolio-text {
+      font-family: var(--font-en);
+      font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+      font-weight: 700; letter-spacing: 0.08em;
+      color: var(--text-ongreen);
+      border-top: 2px solid var(--text-ongreen);
+      padding-top: 14px; display: inline-block;
+    }
+    #hero-tagline { font-size: 0.95rem; color: var(--text-ongreen); opacity: 0.8; max-width: 480px; }
+    #hero-summary { font-size: 1.05rem; color: var(--text-ongreen); max-width: 520px; line-height: 1.75; }
+    .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .hero-chip {
+      background: rgba(0,0,0,0.1); color: var(--text-ongreen);
+      font-size: 0.8rem; padding: 6px 14px;
+      border-radius: 20px; font-weight: 500;
+    }
+    .hero-scroll-hint {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--text-ongreen); opacity: 0.45;
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .hero-scroll-hint::after {
+      content: ''; width: 1px; height: 36px;
+      background: var(--text-ongreen); opacity: 0.4;
+    }
+
+    /* ============================================================
+       02. ABOUT
+    ============================================================ */
+    #section-about { background: var(--bg-about); padding: var(--pad-section) 0; }
+    #about-layout { display: grid; grid-template-columns: 220px 1fr; gap: 56px; align-items: start; }
+    #about-photo-wrap {
+      width: 220px; height: 270px;
+      background: var(--green-pale);
+      border: 2px solid var(--green-mid);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      color: var(--green-dark); font-size: 0.82rem; font-weight: 500;
+      position: relative; overflow: hidden;
+    }
+    #about-photo-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+    #about-photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; }
+    #about-photo-placeholder::before { content: '＋'; font-size: 1.8rem; opacity: 0.4; }
+
+    #about-info { display: flex; flex-direction: column; }
+    #about-name { font-size: 2rem; font-weight: 700; margin-bottom: 20px; color: var(--text-dark); }
+    #about-details { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    #about-details tr { border-bottom: 1px solid var(--border); }
+    #about-details tr:first-child { border-top: 1px solid var(--border); }
+    #about-details th {
+      padding: 12px 16px 12px 0; font-size: 0.75rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-light); width: 110px; vertical-align: top;
+    }
+    #about-details td { padding: 12px 0; font-size: 0.95rem; color: var(--text-dark); }
+    #about-intro-text { font-size: 0.95rem; color: var(--text-mid); line-height: 1.85; }
+
+    /* ============================================================
+       03. ACTIVITIES
+    ============================================================ */
+    #section-activities { background: var(--bg-activity); padding: var(--pad-section) 0; }
+    #activity-list { list-style: none; display: flex; flex-direction: column; }
+    .activity-item {
+      display: grid; grid-template-columns: 160px 1fr auto;
+      gap: 24px; align-items: center;
+      padding: 20px 24px;
+      background: #fff; border: 1px solid var(--border); border-top: none;
+      transition: background 0.2s;
+    }
+    .activity-item:first-child { border-top: 1px solid var(--border); }
+    .activity-item:hover { background: var(--green-pale); border-left: 3px solid var(--green); padding-left: 21px; }
+    .activity-date { font-family: var(--font-en); font-size: 0.8rem; color: var(--text-light); }
+    .activity-name { font-size: 0.95rem; font-weight: 500; color: var(--text-dark); }
+    .activity-badge {
+      font-size: 0.72rem; font-weight: 700; padding: 4px 12px;
+      border-radius: 20px; white-space: nowrap;
+      background: var(--green-pale); color: var(--green-dark); border: 1px solid var(--green-mid);
+    }
+    .activity-badge.ext   { background: #FFF8EC; color: #A05A00; border-color: #FFD98E; }
+    .activity-badge.award { background: #FFFBEC; color: #7A6000; border-color: #FFE780; }
+
+    /* ============================================================
+       04. PROJECTS
+    ============================================================ */
+    #section-projects { background: var(--bg-project); padding: var(--pad-section) 0; }
+    #section-projects .section-title { color: var(--text-white); }
+    #project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 1px; border: 1px solid var(--border-dark); }
+    .project-card {
+      padding: 32px 28px; background: #1A1A1A;
+      position: relative; overflow: hidden; transition: background 0.25s;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 0; background: var(--green); transition: height 0.3s;
+    }
+    .project-card:hover { background: #222; }
+    .project-card:hover::before { height: 100%; }
+    .project-number { font-family: var(--font-en); font-size: 0.7rem; letter-spacing: 0.15em; color: #555; margin-bottom: 20px; }
+    .project-type { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+    .project-title { font-size: 1.15rem; font-weight: 700; color: var(--text-white); margin-bottom: 12px; line-height: 1.35; }
+    .project-desc { font-size: 0.88rem; color: #888; line-height: 1.75; }
+
+    /* ============================================================
+       05. GALLERY
+    ============================================================ */
+    #section-gallery { background: var(--bg-gallery); padding: var(--pad-section) 0; }
+    #gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .gallery-slot {
+      aspect-ratio: 1;
+      background: var(--green-pale); border: 1.5px dashed var(--green-mid);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; color: var(--green-dark); font-size: 0.8rem; font-weight: 500;
+      overflow: hidden; position: relative; transition: border-color 0.2s, background 0.2s;
+    }
+    .gallery-slot:hover { border-color: var(--green-dark); background: var(--green-mid); }
+    .gallery-slot .slot-icon { font-size: 1.4rem; opacity: 0.4; }
+    .gallery-slot .slot-label { font-size: 0.78rem; }
+    .gallery-slot img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      display: none; z-index: 1;
+    }
+    .gallery-slot img.loaded { display: block; }
+
+    /* ============================================================
+       06. VIDEO
+    ============================================================ */
+    #section-video { background: var(--bg-video); padding: var(--pad-section) 0; }
+    #video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .video-slot {
+      aspect-ratio: 16/9; background: #fff;
+      border: 1.5px solid var(--green-mid);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; color: var(--green-dark); font-size: 0.82rem;
+      font-weight: 500; position: relative; overflow: hidden;
+    }
+    .video-slot .v-icon { font-size: 1.8rem; opacity: 0.3; }
+    .video-slot .v-label { font-size: 0.78rem; }
+    .video-slot video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: contain;
+      display: none; background: #000;
+    }
+    .video-slot video.loaded { display: block; }
+
+    /* ============================================================
+       07. CONTACT
+    ============================================================ */
+    #section-contact { background: var(--bg-contact); padding: var(--pad-section) 0; }
+    #section-contact .section-title { color: var(--text-white); }
+    #contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    #contact-info-list { list-style: none; display: flex; flex-direction: column; gap: 28px; }
+    .contact-info-item { display: flex; flex-direction: column; gap: 6px; }
+    .contact-info-label {
+      font-family: var(--font-en); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--green);
+    }
+    .contact-info-value { font-size: 0.95rem; color: #AAA; }
+    #contact-form { display: flex; flex-direction: column; gap: 12px; }
+    #contact-form input, #contact-form textarea {
+      width: 100%; padding: 13px 16px;
+      background: #242424; border: 1px solid var(--border-dark);
+      color: var(--text-white); font-family: var(--font); font-size: 0.92rem;
+      outline: none; border-radius: var(--radius); transition: border-color 0.2s;
+    }
+    #contact-form input::placeholder, #contact-form textarea::placeholder { color: #555; }
+    #contact-form input:focus, #contact-form textarea:focus { border-color: var(--green); }
+    #contact-form textarea { min-height: 130px; resize: vertical; }
+    #contact-form-submit {
+      align-self: flex-start; padding: 13px 32px;
+      background: var(--green); color: var(--text-ongreen);
+      border: none; font-family: var(--font); font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; border-radius: var(--radius); transition: background 0.2s, transform 0.15s;
+    }
+    #contact-form-submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #site-footer {
+      background: #111;
+      border-top: 1px solid #2A2A2A;
+      padding: 28px 0;
+      /* admin-bar 높이만큼 margin 확보 (로그인 시 JS로 추가) */
+    }
+    #site-footer .container { display: flex; justify-content: space-between; align-items: center; }
+    #footer-copy { font-size: 0.8rem; color: #555; font-family: var(--font-en); }
+    .footer-dot { color: var(--green); font-size: 1.2rem; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 700px) {
+      :root { --pad-section: 60px; }
+      .container { padding: 0 20px; }
+      #nav-menu { display: none; }
+      #nav-hamburger { display: flex; }
+      #hero-name { font-size: 3rem; }
+      #about-layout { grid-template-columns: 1fr; }
+      #about-photo-wrap { width: 100%; height: 220px; }
+      .activity-item { grid-template-columns: 1fr; gap: 6px; padding: 16px; }
+      .activity-badge { align-self: flex-start; }
+      #project-grid { grid-template-columns: 1fr; }
+      #gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      #video-grid { grid-template-columns: 1fr; }
+      #contact-layout { grid-template-columns: 1fr; gap: 40px; }
+      #site-footer .container { flex-direction: column; gap: 8px; text-align: center; }
+      #admin-bar { padding: 0 16px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================
+       TOAST
+  ====================================================== -->
+  <div id="toast"></div>
+
+  <!-- ======================================================
+       LOGIN OVERLAY / MODAL
+  ====================================================== -->
+  <div id="login-overlay" role="dialog" aria-modal="true" aria-label="관리자 로그인">
+    <div id="login-modal">
+      <button id="login-close" aria-label="닫기" onclick="closeLogin()">✕</button>
+      <h2>관리자 로그인</h2>
+      <p>포트폴리오를 수정하려면 로그인하세요</p>
+
+      <div class="modal-field">
+        <label for="login-id">아이디</label>
+        <input type="text" id="login-id" placeholder="아이디 입력" autocomplete="username" />
+      </div>
+      <div class="modal-field">
+        <label for="login-pw">비밀번호</label>
+        <input type="password" id="login-pw" placeholder="비밀번호 입력" autocomplete="current-password" />
+      </div>
+      <p id="login-error">아이디 또는 비밀번호가 올바르지 않습니다</p>
+
+      <div class="modal-actions">
+        <button class="modal-btn secondary" onclick="closeLogin()">취소</button>
+        <button class="modal-btn primary" onclick="doLogin()">로그인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       HIDDEN FILE INPUTS
+  ====================================================== -->
+  <input type="file" id="file-profile" class="hidden-file" accept="image/*" />
+  <input type="file" id="file-gallery" class="hidden-file" accept="image/*" />
+  <input type="file" id="file-video"   class="hidden-file" accept="video/*" />
+
+  <!-- ======================================================
+       ADMIN BAR (하단 고정, 로그인 후 노출)
+  ====================================================== -->
+  <div id="admin-bar">
+    <span class="bar-msg">편집 모드 활성화 — 텍스트를 클릭하여 수정하세요</span>
+    <div class="bar-actions">
+      <button class="bar-btn" onclick="saveData()">💾 저장</button>
+      <button class="bar-btn logout" onclick="doLogout()">로그아웃</button>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       NAV
+  ====================================================== -->
+  <nav id="site-nav">
+    <div class="container">
+      <a href="#section-hero" id="nav-logo">이성민</a>
+
+      <ul id="nav-menu">
+        <li><a href="#section-about">About</a></li>
+        <li><a href="#section-activities">활동</a></li>
+        <li><a href="#section-projects">프로젝트</a></li>
+        <li><a href="#section-gallery">작품</a></li>
+        <li><a href="#section-video">영상</a></li>
+        <li><a href="#section-contact">Contact</a></li>
+        <li><button id="admin-nav-btn" onclick="handleAdminBtnClick()">관리자</button></li>
+      </ul>
+
+      <!-- 모바일: 햄버거 + 관리자 버튼 -->
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button id="admin-nav-btn-mobile" class="bar-btn" style="display:none;background:rgba(0,0,0,0.08);color:var(--text-dark);font-size:0.72rem;" onclick="handleAdminBtnClick()">관리자</button>
+        <button id="nav-hamburger" aria-label="메뉴 열기" onclick="toggleMobileMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 모바일 드롭다운 메뉴 -->
+  <div id="mobile-menu">
+    <a href="#section-about"      onclick="closeMobileMenu()">About</a>
+    <a href="#section-activities" onclick="closeMobileMenu()">활동</a>
+    <a href="#section-projects"   onclick="closeMobileMenu()">프로젝트</a>
+    <a href="#section-gallery"    onclick="closeMobileMenu()">작품</a>
+    <a href="#section-video"      onclick="closeMobileMenu()">영상</a>
+    <a href="#section-contact"    onclick="closeMobileMenu()">Contact</a>
+  </div>
+
+
+  <!-- ======================================================
+       01. HERO  |  id="section-hero"
+  ====================================================== -->
+  <section id="section-hero">
+    <div class="container">
+      <div class="hero-inner">
+        <span class="hero-eyebrow">2025 PORTFOLIO.</span>
+        <h1 id="hero-name">이성민</h1>
+        <div class="hero-portfolio-text">JOB SEEKER · HIGH SCHOOL</div>
+        <p id="hero-tagline">취업을 준비하는 고등학생 | 관심 분야를 한 줄로 적어 주세요</p>
+        <p id="hero-summary">
+          안녕하세요. 저는 ○○고등학교 ○학년에 재학 중인 이성민입니다.<br />
+          이 포트폴리오는 제가 쌓아온 경험과 역량을 정리한 공간입니다.
+        </p>
+        <div class="hero-chips">
+          <span class="hero-chip" id="hero-chip-email">example@email.com</span>
+          <span class="hero-chip" id="hero-chip-phone">010-0000-0000</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">SCROLL</div>
+  </section>
+
+
+  <!-- ======================================================
+       02. ABOUT  |  id="section-about"
+  ====================================================== -->
+  <section id="section-about">
+    <div class="container">
+      <p class="section-label green">About Me</p>
+      <h2 class="section-title">자기소개</h2>
+
+      <div id="about-layout">
+        <!-- 프로필 사진 -->
+        <div id="about-photo-wrap" class="upload-zone" title="관리자 모드에서 클릭하여 사진 업로드">
+          <img id="about-photo" src="" alt="프로필 사진" />
+          <div id="about-photo-placeholder">
+            <span style="font-size:1.8rem;opacity:0.4">＋</span>
+            <span>프로필 사진</span>
+          </div>
+        </div>
+
+        <div id="about-info">
+          <h3 id="about-name">이성민</h3>
+          <table id="about-details">
+            <tbody>
+              <tr><th>학교</th><td id="about-school">○○고등학교</td></tr>
+              <tr><th>학년</th><td id="about-grade">○학년</td></tr>
+              <tr><th>관심 분야</th><td id="about-major">관심 분야를 입력하세요</td></tr>
+              <tr><th>자격증</th><td id="about-cert">취득 자격증을 입력하세요</td></tr>
+            </tbody>
+          </table>
+          <p id="about-intro-text">
+            저의 강점과 목표, 가치관에 대해 자유롭게 써 주세요.
+            채용 담당자가 읽을 때 나답게 느껴지는 내용이면 좋습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       03. ACTIVITIES  |  id="section-activities"
+  ====================================================== -->
+  <section id="section-activities">
+    <div class="container">
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">주요 교내외 활동</h2>
+
+      <ul id="activity-list">
+        <li class="activity-item" id="activity-1">
+          <span class="activity-date" id="act-date-1">2024.03 — 현재</span>
+          <span class="activity-name" id="act-name-1">활동명을 입력하세요</span>
+          <span class="activity-badge">교내 활동</span>
+        </li>
+        <li class="activity-item" id="activity-2">
+          <span class="activity-date" id="act-date-2">2024.06</span>
+          <span class="activity-name" id="act-name-2">활동명을 입력하세요</span>
+          <span class="activity-badge award">수상</span>
+        </li>
+        <li class="activity-item" id="activity-3">
+          <span class="activity-date" id="act-date-3">2023.09 — 2024.02</span>
+          <span class="activity-name" id="act-name-3">활동명을 입력하세요</span>
+          <span class="activity-badge ext">교외 활동</span>
+        </li>
+        <li class="activity-item" id="activity-4">
+          <span class="activity-date" id="act-date-4">2023.03</span>
+          <span class="activity-name" id="act-name-4">활동명을 입력하세요</span>
+          <span class="activity-badge">교내 활동</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       04. PROJECTS  |  id="section-projects"
+  ====================================================== -->
+  <section id="section-projects">
+    <div class="container">
+      <p class="section-label light">Work</p>
+      <h2 class="section-title">프로젝트 경험</h2>
+
+      <div id="project-grid">
+        <article class="project-card" id="project-1">
+          <p class="project-number">01</p>
+          <p class="project-type" id="proj-type-1">개인 프로젝트</p>
+          <h3 class="project-title" id="proj-title-1">프로젝트 제목</h3>
+          <p class="project-desc"  id="proj-desc-1">이 프로젝트를 시작하게 된 계기, 사용한 기술이나 방법, 결과물과 배운 점을 간략하게 적어 주세요.</p>
+        </article>
+        <article class="project-card" id="project-2">
+          <p class="project-number">02</p>
+          <p class="project-type" id="proj-type-2">팀 프로젝트</p>
+          <h3 class="project-title" id="proj-title-2">프로젝트 제목</h3>
+          <p class="project-desc"  id="proj-desc-2">팀에서 내가 맡은 역할과 기여한 부분을 중심으로 설명하세요.</p>
+        </article>
+        <article class="project-card" id="project-3">
+          <p class="project-number">03</p>
+          <p class="project-type" id="proj-type-3">수업 과제</p>
+          <h3 class="project-title" id="proj-title-3">프로젝트 제목</h3>
+          <p class="project-desc"  id="proj-desc-3">수업이나 대외 활동에서 진행한 심화 과제를 설명하세요.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       05. GALLERY  |  id="section-gallery"
+  ====================================================== -->
+  <section id="section-gallery">
+    <div class="container">
+      <p class="section-label green">Gallery</p>
+      <h2 class="section-title">작품 갤러리</h2>
+
+      <div id="gallery-grid">
+        <div class="gallery-slot upload-zone" id="gallery-slot-1" data-idx="1" title="관리자 모드에서 클릭하여 사진 업로드">
+          <img id="gallery-img-1" src="" alt="작품 1" />
+          <span class="slot-icon">＋</span>
+          <span class="slot-label">작품 사진 1</span>
+        </div>
+        <div class="gallery-slot upload-zone" id="gallery-slot-2" data-idx="2">
+          <img id="gallery-img-2" src="" alt="작품 2" />
+          <span class="slot-icon">＋</span>
+          <span class="slot-label">작품 사진 2</span>
+        </div>
+        <div class="gallery-slot upload-zone" id="gallery-slot-3" data-idx="3">
+          <img id="gallery-img-3" src="" alt="작품 3" />
+          <span class="slot-icon">＋</span>
+          <span class="slot-label">작품 사진 3</span>
+        </div>
+        <div class="gallery-slot upload-zone" id="gallery-slot-4" data-idx="4">
+          <img id="gallery-img-4" src="" alt="작품 4" />
+          <span class="slot-icon">＋</span>
+          <span class="slot-label">작품 사진 4</span>
+        </div>
+        <div class="gallery-slot upload-zone" id="gallery-slot-5" data-idx="5">
+          <img id="gallery-img-5" src="" alt="작품 5" />
+          <span class="slot-icon">＋</span>
+          <span class="slot-label">작품 사진 5</span>
+        </div>
+        <div class="gallery-slot upload-zone" id="gallery-slot-6" data-idx="6">
+          <img id="gallery-img-6" src="" alt="작품 6" />
+          <span class="slot-icon">＋</span>
+          <span class="slot-label">작품 사진 6</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       06. VIDEO  |  id="section-video"
+  ====================================================== -->
+  <section id="section-video">
+    <div class="container">
+      <p class="section-label green">Media</p>
+      <h2 class="section-title">영상 자료</h2>
+
+      <div id="video-grid">
+        <div class="video-slot upload-zone" id="video-slot-1" data-idx="1" title="관리자 모드에서 클릭하여 영상 업로드">
+          <video id="video-1" controls preload="none"></video>
+          <span class="v-icon">▶</span>
+          <span class="v-label" id="video-placeholder-1">영상 1 (준비 중)</span>
+        </div>
+        <div class="video-slot upload-zone" id="video-slot-2" data-idx="2">
+          <video id="video-2" controls preload="none"></video>
+          <span class="v-icon">▶</span>
+          <span class="v-label" id="video-placeholder-2">영상 2 (준비 중)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       07. CONTACT  |  id="section-contact"
+  ====================================================== -->
+  <section id="section-contact">
+    <div class="container">
+      <p class="section-label light">Contact</p>
+      <h2 class="section-title">연락처</h2>
+
+      <div id="contact-layout">
+        <ul id="contact-info-list">
+          <li class="contact-info-item" id="contact-item-email">
+            <span class="contact-info-label">Email</span>
+            <span class="contact-info-value" id="contact-email">example@email.com</span>
+          </li>
+          <li class="contact-info-item" id="contact-item-phone">
+            <span class="contact-info-label">Phone</span>
+            <span class="contact-info-value" id="contact-phone">010-0000-0000</span>
+          </li>
+          <li class="contact-info-item" id="contact-item-address">
+            <span class="contact-info-label">Location</span>
+            <span class="contact-info-value" id="contact-address">○○시 ○○구</span>
+          </li>
+          <li class="contact-info-item" id="contact-item-sns">
+            <span class="contact-info-label">SNS / Link</span>
+            <span class="contact-info-value" id="contact-sns">GitHub · Instagram · etc.</span>
+          </li>
+        </ul>
+
+        <form id="contact-form" onsubmit="handleFormSubmit(event)">
+          <input type="text"  id="contact-form-sender"  name="sender"  placeholder="성함" required />
+          <input type="email" id="contact-form-email-input" name="email" placeholder="이메일" required />
+          <textarea id="contact-form-message" name="message" placeholder="메시지를 입력하세요" required></textarea>
+          <button type="submit" id="contact-form-submit">메시지 보내기</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       FOOTER  |  id="site-footer"
+  ====================================================== -->
+  <footer id="site-footer">
+    <div class="container">
+      <p id="footer-copy">© 2025 이성민 Portfolio</p>
+      <span class="footer-dot">✦</span>
+    </div>
+  </footer>
+
+
+  <!-- ======================================================
+       SCRIPT
+  ====================================================== -->
+  <script>
+    /* ─── 상수 ─── */
+    const ADMIN_ID = 'qwer1234';
+    const ADMIN_PW = 'qwer1234';
+    const STORE_KEY = 'portfolio_data_v1';
+
+    /* ─── 편집 가능한 텍스트 요소 ID 목록 ─── */
+    const TEXT_IDS = [
+      'hero-name','hero-tagline','hero-summary','hero-chip-email','hero-chip-phone',
+      'about-name','about-school','about-grade','about-major','about-cert','about-intro-text',
+      'act-date-1','act-name-1','act-date-2','act-name-2',
+      'act-date-3','act-name-3','act-date-4','act-name-4',
+      'proj-type-1','proj-title-1','proj-desc-1',
+      'proj-type-2','proj-title-2','proj-desc-2',
+      'proj-type-3','proj-title-3','proj-desc-3',
+      'contact-email','contact-phone','contact-address','contact-sns',
+      'footer-copy'
+    ];
+
+    /* ─── 상태 ─── */
+    let isAdmin = false;
+    let pendingGalleryIdx = null;
+    let pendingVideoIdx   = null;
+
+    /* ================================================================
+       NAV 스크롤 효과
+    ================================================================ */
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('site-nav');
+      nav.style.boxShadow = scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+    });
+
+    /* ================================================================
+       모바일 메뉴
+    ================================================================ */
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const btn  = document.getElementById('nav-hamburger');
+      const open = menu.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobile-menu').classList.remove('open');
+      document.getElementById('nav-hamburger').classList.remove('open');
+    }
+
+    /* 모바일 여부에 따라 모바일 관리자 버튼 표시 */
+    function syncMobileAdminBtn() {
+      const isMobile = window.innerWidth <= 700;
+      document.getElementById('admin-nav-btn-mobile').style.display = isMobile ? 'block' : 'none';
+    }
+    window.addEventListener('resize', syncMobileAdminBtn);
+    syncMobileAdminBtn();
+
+    /* ================================================================
+       로그인 모달
+    ================================================================ */
+    function handleAdminBtnClick() {
+      if (isAdmin) { doLogout(); return; }
+      openLogin();
+    }
+
+    function openLogin() {
+      document.getElementById('login-overlay').classList.add('open');
+      document.getElementById('login-id').value = '';
+      document.getElementById('login-pw').value = '';
+      document.getElementById('login-error').style.display = 'none';
+      setTimeout(() => document.getElementById('login-id').focus(), 80);
+    }
+    function closeLogin() {
+      document.getElementById('login-overlay').classList.remove('open');
+    }
+
+    /* 오버레이 바깥 클릭 시 닫기 */
+    document.getElementById('login-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('login-overlay')) closeLogin();
+    });
+
+    /* Enter 키 로그인 */
+    ['login-id','login-pw'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      });
+    });
+
+    function doLogin() {
+      const id = document.getElementById('login-id').value.trim();
+      const pw = document.getElementById('login-pw').value;
+      if (id === ADMIN_ID && pw === ADMIN_PW) {
+        isAdmin = true;
+        closeLogin();
+        enableEditMode();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('login-pw').focus();
+      }
+    }
+
+    /* ================================================================
+       편집 모드 활성화 / 비활성화
+    ================================================================ */
+    function enableEditMode() {
+      document.body.classList.add('edit-mode');
+      document.getElementById('admin-bar').classList.add('visible');
+      document.getElementById('site-footer').style.paddingBottom = '52px';
+
+      /* 텍스트 요소 편집 가능 */
+      TEXT_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.contentEditable = 'true';
+      });
+
+      /* 관리자 버튼 표시 업데이트 */
+      ['admin-nav-btn','admin-nav-btn-mobile'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) { btn.textContent = '로그아웃'; btn.classList.add('active'); }
+      });
+
+      /* 갤러리 클릭 이벤트 */
+      document.querySelectorAll('.gallery-slot.upload-zone').forEach(slot => {
+        slot.addEventListener('click', onGallerySlotClick);
+      });
+
+      /* 영상 슬롯 클릭 이벤트 */
+      document.querySelectorAll('.video-slot.upload-zone').forEach(slot => {
+        slot.addEventListener('click', onVideoSlotClick);
+      });
+
+      /* 프로필 사진 클릭 이벤트 */
+      document.getElementById('about-photo-wrap').addEventListener('click', onProfileClick);
+
+      showToast('편집 모드가 활성화되었습니다');
+    }
+
+    function doLogout() {
+      isAdmin = false;
+      document.body.classList.remove('edit-mode');
+      document.getElementById('admin-bar').classList.remove('visible');
+      document.getElementById('site-footer').style.paddingBottom = '';
+
+      TEXT_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.contentEditable = 'false';
+      });
+
+      ['admin-nav-btn','admin-nav-btn-mobile'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) { btn.textContent = '관리자'; btn.classList.remove('active'); }
+      });
+
+      /* 이벤트 제거 */
+      document.querySelectorAll('.gallery-slot.upload-zone').forEach(slot => {
+        slot.removeEventListener('click', onGallerySlotClick);
+      });
+      document.querySelectorAll('.video-slot.upload-zone').forEach(slot => {
+        slot.removeEventListener('click', onVideoSlotClick);
+      });
+      document.getElementById('about-photo-wrap').removeEventListener('click', onProfileClick);
+
+      showToast('로그아웃 되었습니다');
+    }
+
+    /* ================================================================
+       파일 업로드 — 프로필 사진
+    ================================================================ */
+    function onProfileClick() {
+      const fi = document.getElementById('file-profile');
+      fi.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        readFileAsDataURL(file, src => {
+          const img = document.getElementById('about-photo');
+          img.src = src;
+          img.style.display = 'block';
+          document.getElementById('about-photo-placeholder').style.display = 'none';
+        });
+        fi.value = '';
+      };
+      fi.click();
+    }
+
+    /* ================================================================
+       파일 업로드 — 갤러리
+    ================================================================ */
+    function onGallerySlotClick(e) {
+      /* video slot 내부 controls 클릭 전파 방지 */
+      if (e.target.tagName === 'VIDEO') return;
+      const slot = this;
+      const idx  = slot.dataset.idx;
+      const fi   = document.getElementById('file-gallery');
+      fi.onchange = ev => {
+        const file = ev.target.files[0];
+        if (!file) return;
+        readFileAsDataURL(file, src => {
+          const img = document.getElementById('gallery-img-' + idx);
+          img.src = src;
+          img.classList.add('loaded');
+          /* 플레이스홀더 숨김 */
+          slot.querySelector('.slot-icon').style.display = 'none';
+          slot.querySelector('.slot-label').style.display = 'none';
+        });
+        fi.value = '';
+      };
+      fi.click();
+    }
+
+    /* ================================================================
+       파일 업로드 — 영상
+    ================================================================ */
+    function onVideoSlotClick(e) {
+      if (e.target.tagName === 'VIDEO') return;
+      const slot = this;
+      const idx  = slot.dataset.idx;
+      const fi   = document.getElementById('file-video');
+      fi.onchange = ev => {
+        const file = ev.target.files[0];
+        if (!file) return;
+        readFileAsDataURL(file, src => {
+          const vid = document.getElementById('video-' + idx);
+          vid.src = src;
+          vid.classList.add('loaded');
+          slot.querySelector('.v-icon').style.display = 'none';
+          document.getElementById('video-placeholder-' + idx).style.display = 'none';
+        });
+        fi.value = '';
+      };
+      fi.click();
+    }
+
+    /* ================================================================
+       FileReader 헬퍼
+    ================================================================ */
+    function readFileAsDataURL(file, cb) {
+      const reader = new FileReader();
+      reader.onload = e => cb(e.target.result);
+      reader.readAsDataURL(file);
+    }
+
+    /* ================================================================
+       LocalStorage — 저장
+    ================================================================ */
+    function saveData() {
+      const data = { texts: {}, images: {}, videos: {} };
+
+      /* 텍스트 */
+      TEXT_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data.texts[id] = el.innerText;
+      });
+
+      /* 이미지 (profile + gallery) */
+      const profileImg = document.getElementById('about-photo');
+      if (profileImg.src && profileImg.src !== window.location.href) {
+        data.images['profile'] = profileImg.src;
+      }
+      for (let i = 1; i <= 6; i++) {
+        const img = document.getElementById('gallery-img-' + i);
+        if (img && img.src && img.src !== window.location.href && img.classList.contains('loaded')) {
+          data.images['gallery-' + i] = img.src;
+        }
+      }
+
+      /* 영상 (base64로 저장 — 파일이 크면 localStorage 한도 초과 가능, 안내) */
+      for (let i = 1; i <= 2; i++) {
+        const vid = document.getElementById('video-' + i);
+        if (vid && vid.src && vid.src !== window.location.href && vid.classList.contains('loaded')) {
+          try { data.videos['video-' + i] = vid.src; } catch(e) {}
+        }
+      }
+
+      try {
+        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+        showToast('저장 완료!');
+      } catch(e) {
+        showToast('저장 공간이 부족합니다 (영상 파일이 너무 큰 경우 발생)');
+      }
+    }
+
+    /* ================================================================
+       LocalStorage — 불러오기 (페이지 로드 시 자동)
+    ================================================================ */
+    function loadData() {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      let data;
+      try { data = JSON.parse(raw); } catch(e) { return; }
+
+      /* 텍스트 복원 */
+      if (data.texts) {
+        Object.entries(data.texts).forEach(([id, val]) => {
+          const el = document.getElementById(id);
+          if (el) el.innerText = val;
+        });
+      }
+
+      /* 이미지 복원 */
+      if (data.images) {
+        if (data.images['profile']) {
+          const img = document.getElementById('about-photo');
+          img.src = data.images['profile'];
+          img.style.display = 'block';
+          document.getElementById('about-photo-placeholder').style.display = 'none';
+        }
+        for (let i = 1; i <= 6; i++) {
+          const key = 'gallery-' + i;
+          if (data.images[key]) {
+            const img  = document.getElementById('gallery-img-' + i);
+            const slot = document.getElementById('gallery-slot-' + i);
+            img.src = data.images[key];
+            img.classList.add('loaded');
+            if (slot) {
+              const icon  = slot.querySelector('.slot-icon');
+              const label = slot.querySelector('.slot-label');
+              if (icon)  icon.style.display  = 'none';
+              if (label) label.style.display = 'none';
+            }
+          }
+        }
+      }
+
+      /* 영상 복원 */
+      if (data.videos) {
+        for (let i = 1; i <= 2; i++) {
+          const key = 'video-' + i;
+          if (data.videos[key]) {
+            const vid  = document.getElementById('video-' + i);
+            const slot = document.getElementById('video-slot-' + i);
+            vid.src = data.videos[key];
+            vid.classList.add('loaded');
+            if (slot) {
+              const icon  = slot.querySelector('.v-icon');
+              const ph    = document.getElementById('video-placeholder-' + i);
+              if (icon) icon.style.display = 'none';
+              if (ph)   ph.style.display   = 'none';
+            }
+          }
+        }
+      }
+    }
+
+    /* ================================================================
+       폼 전송
+    ================================================================ */
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const sender  = document.getElementById('contact-form-sender').value.trim();
+      const email   = document.getElementById('contact-form-email-input').value.trim();
+      const message = document.getElementById('contact-form-message').value.trim();
+      if (!sender || !email || !message) return;
+      alert(sender + '님, 메시지가 전달되었습니다. 감사합니다!');
+      event.target.reset();
+    }
+
+    /* ================================================================
+       토스트 알림
+    ================================================================ */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    /* ================================================================
+       초기화
+    ================================================================ */
+    loadData();
+  </script>
+
+</body>
+</html>
