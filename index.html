@@ -121,24 +121,6 @@
     }
     #nav-menu a:hover { color: var(--text-dark); border-bottom-color: var(--green); }
 
-    /* 관리자 버튼 */
-    #admin-nav-btn {
-      background: transparent;
-      border: 1.5px solid var(--border);
-      color: var(--text-light);
-      font-family: var(--font);
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    #admin-nav-btn:hover { border-color: var(--green-dark); color: var(--green-dark); }
-    #admin-nav-btn.active { background: var(--green); border-color: var(--green); color: var(--text-ongreen); }
-
     /* 햄버거 (모바일) */
     #nav-hamburger {
       display: none;
@@ -182,40 +164,6 @@
     }
     #mobile-menu a:last-child { border-bottom: none; }
 
-    /* ── 관리자 바 (로그인 후 하단 고정) ── */
-    #admin-bar {
-      display: none;
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 300;
-      background: var(--green);
-      color: var(--text-ongreen);
-      height: 52px;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 32px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-    #admin-bar.visible { display: flex; }
-    #admin-bar .bar-msg { display: flex; align-items: center; gap: 8px; }
-    #admin-bar .bar-msg::before { content: '✏️'; font-size: 1rem; }
-    .bar-actions { display: flex; gap: 10px; }
-    .bar-btn {
-      background: rgba(0,0,0,0.12);
-      border: none;
-      color: var(--text-ongreen);
-      font-family: var(--font);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 6px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .bar-btn:hover { background: rgba(0,0,0,0.22); }
-    .bar-btn.logout { background: rgba(0,0,0,0.2); }
-
     /* ── 편집 모드: 수정 가능한 요소 표시 ── */
     body.edit-mode [contenteditable="true"] {
       outline: 2px dashed rgba(62,201,77,0.6);
@@ -249,76 +197,6 @@
       pointer-events: none;
     }
     #toast.show { opacity: 1; }
-
-    /* ── 로그인 모달 ── */
-    #login-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(6px);
-      align-items: center;
-      justify-content: center;
-    }
-    #login-overlay.open { display: flex; }
-    #login-modal {
-      background: #fff;
-      width: 100%;
-      max-width: 400px;
-      padding: 40px 36px 36px;
-      border-radius: 8px;
-      position: relative;
-    }
-    #login-modal h2 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    #login-modal p { font-size: 0.88rem; color: var(--text-light); margin-bottom: 28px; }
-    .modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-    .modal-field label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-light); }
-    .modal-field input {
-      padding: 11px 14px;
-      border: 1.5px solid var(--border);
-      font-family: var(--font);
-      font-size: 0.95rem;
-      border-radius: var(--radius);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .modal-field input:focus { border-color: var(--green-dark); }
-    #login-error {
-      font-size: 0.8rem;
-      color: #D93025;
-      margin: -4px 0 12px;
-      display: none;
-    }
-    .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
-    .modal-btn {
-      flex: 1;
-      padding: 12px;
-      font-family: var(--font);
-      font-size: 0.88rem;
-      font-weight: 700;
-      border-radius: var(--radius);
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .modal-btn.primary { background: var(--green); color: var(--text-ongreen); }
-    .modal-btn.secondary { background: #f0f0f0; color: var(--text-mid); }
-    #login-close {
-      position: absolute;
-      top: 16px; right: 16px;
-      background: none; border: none;
-      font-size: 1.3rem; color: var(--text-light);
-      cursor: pointer; line-height: 1;
-    }
-
-    /* ── 숨김 파일 입력 ── */
-    .hidden-file { display: none !important; }
 
     /* ============================================================
        01. HERO
@@ -579,50 +457,6 @@
   <div id="toast"></div>
 
   <!-- ======================================================
-       LOGIN OVERLAY / MODAL
-  ====================================================== -->
-  <div id="login-overlay" role="dialog" aria-modal="true" aria-label="관리자 로그인">
-    <div id="login-modal">
-      <button id="login-close" aria-label="닫기" onclick="closeLogin()">✕</button>
-      <h2>관리자 로그인</h2>
-      <p>포트폴리오를 수정하려면 로그인하세요</p>
-
-      <div class="modal-field">
-        <label for="login-id">아이디</label>
-        <input type="text" id="login-id" placeholder="아이디 입력" autocomplete="username" />
-      </div>
-      <div class="modal-field">
-        <label for="login-pw">비밀번호</label>
-        <input type="password" id="login-pw" placeholder="비밀번호 입력" autocomplete="current-password" />
-      </div>
-      <p id="login-error">아이디 또는 비밀번호가 올바르지 않습니다</p>
-
-      <div class="modal-actions">
-        <button class="modal-btn secondary" onclick="closeLogin()">취소</button>
-        <button class="modal-btn primary" onclick="doLogin()">로그인</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================================================
-       HIDDEN FILE INPUTS
-  ====================================================== -->
-  <input type="file" id="file-profile" class="hidden-file" accept="image/*" />
-  <input type="file" id="file-gallery" class="hidden-file" accept="image/*" />
-  <input type="file" id="file-video"   class="hidden-file" accept="video/*" />
-
-  <!-- ======================================================
-       ADMIN BAR (하단 고정, 로그인 후 노출)
-  ====================================================== -->
-  <div id="admin-bar">
-    <span class="bar-msg">편집 모드 활성화 — 텍스트를 클릭하여 수정하세요</span>
-    <div class="bar-actions">
-      <button class="bar-btn" onclick="saveData()">💾 저장</button>
-      <button class="bar-btn logout" onclick="doLogout()">로그아웃</button>
-    </div>
-  </div>
-
-  <!-- ======================================================
        NAV
   ====================================================== -->
   <nav id="site-nav">
@@ -636,12 +470,10 @@
         <li><a href="#section-gallery">작품</a></li>
         <li><a href="#section-video">영상</a></li>
         <li><a href="#section-contact">Contact</a></li>
-        <li><button id="admin-nav-btn" onclick="handleAdminBtnClick()">관리자</button></li>
       </ul>
 
-      <!-- 모바일: 햄버거 + 관리자 버튼 -->
+      <!-- 모바일: 햄버거 -->
       <div style="display:flex;align-items:center;gap:10px;">
-        <button id="admin-nav-btn-mobile" class="bar-btn" style="display:none;background:rgba(0,0,0,0.08);color:var(--text-dark);font-size:0.72rem;" onclick="handleAdminBtnClick()">관리자</button>
         <button id="nav-hamburger" aria-label="메뉴 열기" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
@@ -668,15 +500,15 @@
       <div class="hero-inner">
         <span class="hero-eyebrow">2025 PORTFOLIO.</span>
         <h1 id="hero-name">이성민</h1>
-        <div class="hero-portfolio-text">JOB SEEKER · HIGH SCHOOL</div>
-        <p id="hero-tagline">취업을 준비하는 고등학생 | 관심 분야를 한 줄로 적어 주세요</p>
+        <div class="hero-portfolio-text">광운인공지능고등학교 3학년</div>
+        <p id="hero-tagline">크리에이터와 게임을 좋아하는 학생입니다.</p>
         <p id="hero-summary">
-          안녕하세요. 저는 ○○고등학교 ○학년에 재학 중인 이성민입니다.<br />
-          이 포트폴리오는 제가 쌓아온 경험과 역량을 정리한 공간입니다.
+          안녕하세요. 저는 광운인공지능고등학교 3학년에 재학 중인 이성민입니다.<br />
+          드론 4종, 전자기능사 등 자격증을 보유하고 있습니다.
         </p>
         <div class="hero-chips">
-          <span class="hero-chip" id="hero-chip-email">example@email.com</span>
-          <span class="hero-chip" id="hero-chip-phone">010-0000-0000</span>
+          <span class="hero-chip" id="hero-chip-email">크리에이터</span>
+          <span class="hero-chip" id="hero-chip-phone">게임</span>
         </div>
       </div>
     </div>
@@ -694,7 +526,7 @@
 
       <div id="about-layout">
         <!-- 프로필 사진 -->
-        <div id="about-photo-wrap" class="upload-zone" title="관리자 모드에서 클릭하여 사진 업로드">
+        <div id="about-photo-wrap" >
           <img id="about-photo" src="" alt="프로필 사진" />
           <div id="about-photo-placeholder">
             <span style="font-size:1.8rem;opacity:0.4">＋</span>
@@ -706,15 +538,15 @@
           <h3 id="about-name">이성민</h3>
           <table id="about-details">
             <tbody>
-              <tr><th>학교</th><td id="about-school">○○고등학교</td></tr>
-              <tr><th>학년</th><td id="about-grade">○학년</td></tr>
-              <tr><th>관심 분야</th><td id="about-major">관심 분야를 입력하세요</td></tr>
-              <tr><th>자격증</th><td id="about-cert">취득 자격증을 입력하세요</td></tr>
+              <tr><th>학교</th><td id="about-school">광운인공지능고등학교</td></tr>
+              <tr><th>학년</th><td id="about-grade">3학년</td></tr>
+              <tr><th>관심 분야</th><td id="about-major">크리에이터, 게임</td></tr>
+              <tr><th>자격증</th><td id="about-cert">드론 4종, 전자기능사 등</td></tr>
             </tbody>
           </table>
           <p id="about-intro-text">
-            저의 강점과 목표, 가치관에 대해 자유롭게 써 주세요.
-            채용 담당자가 읽을 때 나답게 느껴지는 내용이면 좋습니다.
+            저는 드론 자격증을 바탕으로 기술과 창작을 연결하는 학생입니다.<br />
+            크리에이터와 게임 분야에 관심이 많으며, 새로운 경험을 통해 성장하는 것을 즐깁니다.
           </p>
         </div>
       </div>
@@ -767,21 +599,21 @@
       <div id="project-grid">
         <article class="project-card" id="project-1">
           <p class="project-number">01</p>
-          <p class="project-type" id="proj-type-1">개인 프로젝트</p>
-          <h3 class="project-title" id="proj-title-1">프로젝트 제목</h3>
-          <p class="project-desc"  id="proj-desc-1">이 프로젝트를 시작하게 된 계기, 사용한 기술이나 방법, 결과물과 배운 점을 간략하게 적어 주세요.</p>
+          <p class="project-type" id="proj-type-1">메이커 활동</p>
+          <h3 class="project-title" id="proj-title-1">나모공방 전자기기 제작</h3>
+          <p class="project-desc"  id="proj-desc-1">나모공방에서 전자기기 제작을 경험하며 회로 설계와 조립, 테스트 과정을 직접 수행했습니다. 실습을 통해 문제 해결 능력과 정밀한 작업 습관을 키웠습니다.</p>
         </article>
         <article class="project-card" id="project-2">
           <p class="project-number">02</p>
-          <p class="project-type" id="proj-type-2">팀 프로젝트</p>
-          <h3 class="project-title" id="proj-title-2">프로젝트 제목</h3>
-          <p class="project-desc"  id="proj-desc-2">팀에서 내가 맡은 역할과 기여한 부분을 중심으로 설명하세요.</p>
+          <p class="project-type" id="proj-type-2">창작 제작</p>
+          <h3 class="project-title" id="proj-title-2">폼을 이용한 생활 용품 제작</h3>
+          <p class="project-desc"  id="proj-desc-2">폼 재료를 활용해 실용적인 생활 용품을 제작하며 디자인과 제작 공정을 설계했습니다. 사용성과 견고함을 고려해 제품을 완성했습니다.</p>
         </article>
         <article class="project-card" id="project-3">
           <p class="project-number">03</p>
-          <p class="project-type" id="proj-type-3">수업 과제</p>
-          <h3 class="project-title" id="proj-title-3">프로젝트 제목</h3>
-          <p class="project-desc"  id="proj-desc-3">수업이나 대외 활동에서 진행한 심화 과제를 설명하세요.</p>
+          <p class="project-type" id="proj-type-3">공작 활동</p>
+          <h3 class="project-title" id="proj-title-3">3D 프린터 주변기구 제작</h3>
+          <p class="project-desc"  id="proj-desc-3">3D 프린터를 이용해 주변기구를 설계하고 출력했으며, 후가공과 조립까지 진행했습니다. 제작 과정을 통해 제작 도구 활용 능력과 설계 역량을 강화했습니다.</p>
         </article>
       </div>
     </div>
@@ -797,32 +629,32 @@
       <h2 class="section-title">작품 갤러리</h2>
 
       <div id="gallery-grid">
-        <div class="gallery-slot upload-zone" id="gallery-slot-1" data-idx="1" title="관리자 모드에서 클릭하여 사진 업로드">
+        <div class="gallery-slot" id="gallery-slot-1" data-idx="1">
           <img id="gallery-img-1" src="" alt="작품 1" />
           <span class="slot-icon">＋</span>
           <span class="slot-label">작품 사진 1</span>
         </div>
-        <div class="gallery-slot upload-zone" id="gallery-slot-2" data-idx="2">
+        <div class="gallery-slot" id="gallery-slot-2" data-idx="2">
           <img id="gallery-img-2" src="" alt="작품 2" />
           <span class="slot-icon">＋</span>
           <span class="slot-label">작품 사진 2</span>
         </div>
-        <div class="gallery-slot upload-zone" id="gallery-slot-3" data-idx="3">
+        <div class="gallery-slot" id="gallery-slot-3" data-idx="3">
           <img id="gallery-img-3" src="" alt="작품 3" />
           <span class="slot-icon">＋</span>
           <span class="slot-label">작품 사진 3</span>
         </div>
-        <div class="gallery-slot upload-zone" id="gallery-slot-4" data-idx="4">
+        <div class="gallery-slot" id="gallery-slot-4" data-idx="4">
           <img id="gallery-img-4" src="" alt="작품 4" />
           <span class="slot-icon">＋</span>
           <span class="slot-label">작품 사진 4</span>
         </div>
-        <div class="gallery-slot upload-zone" id="gallery-slot-5" data-idx="5">
+        <div class="gallery-slot" id="gallery-slot-5" data-idx="5">
           <img id="gallery-img-5" src="" alt="작품 5" />
           <span class="slot-icon">＋</span>
           <span class="slot-label">작품 사진 5</span>
         </div>
-        <div class="gallery-slot upload-zone" id="gallery-slot-6" data-idx="6">
+        <div class="gallery-slot" id="gallery-slot-6" data-idx="6">
           <img id="gallery-img-6" src="" alt="작품 6" />
           <span class="slot-icon">＋</span>
           <span class="slot-label">작품 사진 6</span>
@@ -841,12 +673,12 @@
       <h2 class="section-title">영상 자료</h2>
 
       <div id="video-grid">
-        <div class="video-slot upload-zone" id="video-slot-1" data-idx="1" title="관리자 모드에서 클릭하여 영상 업로드">
+        <div class="video-slot" id="video-slot-1" data-idx="1">
           <video id="video-1" controls preload="none"></video>
           <span class="v-icon">▶</span>
           <span class="v-label" id="video-placeholder-1">영상 1 (준비 중)</span>
         </div>
-        <div class="video-slot upload-zone" id="video-slot-2" data-idx="2">
+        <div class="video-slot" id="video-slot-2" data-idx="2">
           <video id="video-2" controls preload="none"></video>
           <span class="v-icon">▶</span>
           <span class="v-label" id="video-placeholder-2">영상 2 (준비 중)</span>
@@ -868,7 +700,7 @@
         <ul id="contact-info-list">
           <li class="contact-info-item" id="contact-item-email">
             <span class="contact-info-label">Email</span>
-            <span class="contact-info-value" id="contact-email">example@email.com</span>
+            <span class="contact-info-value" id="contact-email">24kwai0409@sinkine20.sen.go.kr</span>
           </li>
           <li class="contact-info-item" id="contact-item-phone">
             <span class="contact-info-label">Phone</span>
@@ -884,7 +716,9 @@
           </li>
         </ul>
 
-        <form id="contact-form" onsubmit="handleFormSubmit(event)">
+        <form id="contact-form" action="https://formsubmit.co/24kwai0409@sinkine20.sen.go.kr" method="POST" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" name="_subject" value="포트폴리오 문의" />
+          <input type="hidden" name="_captcha" value="false" />
           <input type="text"  id="contact-form-sender"  name="sender"  placeholder="성함" required />
           <input type="email" id="contact-form-email-input" name="email" placeholder="이메일" required />
           <textarea id="contact-form-message" name="message" placeholder="메시지를 입력하세요" required></textarea>
@@ -910,375 +744,43 @@
        SCRIPT
   ====================================================== -->
   <script>
-    /* ─── 상수 ─── */
-    const ADMIN_ID = 'qwer1234';
-    const ADMIN_PW = 'qwer1234';
-    const STORE_KEY = 'portfolio_data_v1';
-
-    /* ─── 편집 가능한 텍스트 요소 ID 목록 ─── */
-    const TEXT_IDS = [
-      'hero-name','hero-tagline','hero-summary','hero-chip-email','hero-chip-phone',
-      'about-name','about-school','about-grade','about-major','about-cert','about-intro-text',
-      'act-date-1','act-name-1','act-date-2','act-name-2',
-      'act-date-3','act-name-3','act-date-4','act-name-4',
-      'proj-type-1','proj-title-1','proj-desc-1',
-      'proj-type-2','proj-title-2','proj-desc-2',
-      'proj-type-3','proj-title-3','proj-desc-3',
-      'contact-email','contact-phone','contact-address','contact-sns',
-      'footer-copy'
-    ];
-
-    /* ─── 상태 ─── */
-    let isAdmin = false;
-    let pendingGalleryIdx = null;
-    let pendingVideoIdx   = null;
-
-    /* ================================================================
-       NAV 스크롤 효과
-    ================================================================ */
     window.addEventListener('scroll', () => {
       const nav = document.getElementById('site-nav');
-      nav.style.boxShadow = scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+      nav.style.boxShadow = window.scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
     });
 
-    /* ================================================================
-       모바일 메뉴
-    ================================================================ */
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
-      const btn  = document.getElementById('nav-hamburger');
+      const btn = document.getElementById('nav-hamburger');
       const open = menu.classList.toggle('open');
       btn.classList.toggle('open', open);
       btn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
     }
+
     function closeMobileMenu() {
       document.getElementById('mobile-menu').classList.remove('open');
       document.getElementById('nav-hamburger').classList.remove('open');
     }
 
-    /* 모바일 여부에 따라 모바일 관리자 버튼 표시 */
-    function syncMobileAdminBtn() {
-      const isMobile = window.innerWidth <= 700;
-      document.getElementById('admin-nav-btn-mobile').style.display = isMobile ? 'block' : 'none';
-    }
-    window.addEventListener('resize', syncMobileAdminBtn);
-    syncMobileAdminBtn();
-
-    /* ================================================================
-       로그인 모달
-    ================================================================ */
-    function handleAdminBtnClick() {
-      if (isAdmin) { doLogout(); return; }
-      openLogin();
-    }
-
-    function openLogin() {
-      document.getElementById('login-overlay').classList.add('open');
-      document.getElementById('login-id').value = '';
-      document.getElementById('login-pw').value = '';
-      document.getElementById('login-error').style.display = 'none';
-      setTimeout(() => document.getElementById('login-id').focus(), 80);
-    }
-    function closeLogin() {
-      document.getElementById('login-overlay').classList.remove('open');
-    }
-
-    /* 오버레이 바깥 클릭 시 닫기 */
-    document.getElementById('login-overlay').addEventListener('click', e => {
-      if (e.target === document.getElementById('login-overlay')) closeLogin();
-    });
-
-    /* Enter 키 로그인 */
-    ['login-id','login-pw'].forEach(id => {
-      document.getElementById(id).addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
-      });
-    });
-
-    function doLogin() {
-      const id = document.getElementById('login-id').value.trim();
-      const pw = document.getElementById('login-pw').value;
-      if (id === ADMIN_ID && pw === ADMIN_PW) {
-        isAdmin = true;
-        closeLogin();
-        enableEditMode();
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-        document.getElementById('login-pw').focus();
-      }
-    }
-
-    /* ================================================================
-       편집 모드 활성화 / 비활성화
-    ================================================================ */
-    function enableEditMode() {
-      document.body.classList.add('edit-mode');
-      document.getElementById('admin-bar').classList.add('visible');
-      document.getElementById('site-footer').style.paddingBottom = '52px';
-
-      /* 텍스트 요소 편집 가능 */
-      TEXT_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.contentEditable = 'true';
-      });
-
-      /* 관리자 버튼 표시 업데이트 */
-      ['admin-nav-btn','admin-nav-btn-mobile'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) { btn.textContent = '로그아웃'; btn.classList.add('active'); }
-      });
-
-      /* 갤러리 클릭 이벤트 */
-      document.querySelectorAll('.gallery-slot.upload-zone').forEach(slot => {
-        slot.addEventListener('click', onGallerySlotClick);
-      });
-
-      /* 영상 슬롯 클릭 이벤트 */
-      document.querySelectorAll('.video-slot.upload-zone').forEach(slot => {
-        slot.addEventListener('click', onVideoSlotClick);
-      });
-
-      /* 프로필 사진 클릭 이벤트 */
-      document.getElementById('about-photo-wrap').addEventListener('click', onProfileClick);
-
-      showToast('편집 모드가 활성화되었습니다');
-    }
-
-    function doLogout() {
-      isAdmin = false;
-      document.body.classList.remove('edit-mode');
-      document.getElementById('admin-bar').classList.remove('visible');
-      document.getElementById('site-footer').style.paddingBottom = '';
-
-      TEXT_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.contentEditable = 'false';
-      });
-
-      ['admin-nav-btn','admin-nav-btn-mobile'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) { btn.textContent = '관리자'; btn.classList.remove('active'); }
-      });
-
-      /* 이벤트 제거 */
-      document.querySelectorAll('.gallery-slot.upload-zone').forEach(slot => {
-        slot.removeEventListener('click', onGallerySlotClick);
-      });
-      document.querySelectorAll('.video-slot.upload-zone').forEach(slot => {
-        slot.removeEventListener('click', onVideoSlotClick);
-      });
-      document.getElementById('about-photo-wrap').removeEventListener('click', onProfileClick);
-
-      showToast('로그아웃 되었습니다');
-    }
-
-    /* ================================================================
-       파일 업로드 — 프로필 사진
-    ================================================================ */
-    function onProfileClick() {
-      const fi = document.getElementById('file-profile');
-      fi.onchange = e => {
-        const file = e.target.files[0];
-        if (!file) return;
-        readFileAsDataURL(file, src => {
-          const img = document.getElementById('about-photo');
-          img.src = src;
-          img.style.display = 'block';
-          document.getElementById('about-photo-placeholder').style.display = 'none';
-        });
-        fi.value = '';
-      };
-      fi.click();
-    }
-
-    /* ================================================================
-       파일 업로드 — 갤러리
-    ================================================================ */
-    function onGallerySlotClick(e) {
-      /* video slot 내부 controls 클릭 전파 방지 */
-      if (e.target.tagName === 'VIDEO') return;
-      const slot = this;
-      const idx  = slot.dataset.idx;
-      const fi   = document.getElementById('file-gallery');
-      fi.onchange = ev => {
-        const file = ev.target.files[0];
-        if (!file) return;
-        readFileAsDataURL(file, src => {
-          const img = document.getElementById('gallery-img-' + idx);
-          img.src = src;
-          img.classList.add('loaded');
-          /* 플레이스홀더 숨김 */
-          slot.querySelector('.slot-icon').style.display = 'none';
-          slot.querySelector('.slot-label').style.display = 'none';
-        });
-        fi.value = '';
-      };
-      fi.click();
-    }
-
-    /* ================================================================
-       파일 업로드 — 영상
-    ================================================================ */
-    function onVideoSlotClick(e) {
-      if (e.target.tagName === 'VIDEO') return;
-      const slot = this;
-      const idx  = slot.dataset.idx;
-      const fi   = document.getElementById('file-video');
-      fi.onchange = ev => {
-        const file = ev.target.files[0];
-        if (!file) return;
-        readFileAsDataURL(file, src => {
-          const vid = document.getElementById('video-' + idx);
-          vid.src = src;
-          vid.classList.add('loaded');
-          slot.querySelector('.v-icon').style.display = 'none';
-          document.getElementById('video-placeholder-' + idx).style.display = 'none';
-        });
-        fi.value = '';
-      };
-      fi.click();
-    }
-
-    /* ================================================================
-       FileReader 헬퍼
-    ================================================================ */
-    function readFileAsDataURL(file, cb) {
-      const reader = new FileReader();
-      reader.onload = e => cb(e.target.result);
-      reader.readAsDataURL(file);
-    }
-
-    /* ================================================================
-       LocalStorage — 저장
-    ================================================================ */
-    function saveData() {
-      const data = { texts: {}, images: {}, videos: {} };
-
-      /* 텍스트 */
-      TEXT_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) data.texts[id] = el.innerText;
-      });
-
-      /* 이미지 (profile + gallery) */
-      const profileImg = document.getElementById('about-photo');
-      if (profileImg.src && profileImg.src !== window.location.href) {
-        data.images['profile'] = profileImg.src;
-      }
-      for (let i = 1; i <= 6; i++) {
-        const img = document.getElementById('gallery-img-' + i);
-        if (img && img.src && img.src !== window.location.href && img.classList.contains('loaded')) {
-          data.images['gallery-' + i] = img.src;
-        }
-      }
-
-      /* 영상 (base64로 저장 — 파일이 크면 localStorage 한도 초과 가능, 안내) */
-      for (let i = 1; i <= 2; i++) {
-        const vid = document.getElementById('video-' + i);
-        if (vid && vid.src && vid.src !== window.location.href && vid.classList.contains('loaded')) {
-          try { data.videos['video-' + i] = vid.src; } catch(e) {}
-        }
-      }
-
-      try {
-        localStorage.setItem(STORE_KEY, JSON.stringify(data));
-        showToast('저장 완료!');
-      } catch(e) {
-        showToast('저장 공간이 부족합니다 (영상 파일이 너무 큰 경우 발생)');
-      }
-    }
-
-    /* ================================================================
-       LocalStorage — 불러오기 (페이지 로드 시 자동)
-    ================================================================ */
-    function loadData() {
-      const raw = localStorage.getItem(STORE_KEY);
-      if (!raw) return;
-      let data;
-      try { data = JSON.parse(raw); } catch(e) { return; }
-
-      /* 텍스트 복원 */
-      if (data.texts) {
-        Object.entries(data.texts).forEach(([id, val]) => {
-          const el = document.getElementById(id);
-          if (el) el.innerText = val;
-        });
-      }
-
-      /* 이미지 복원 */
-      if (data.images) {
-        if (data.images['profile']) {
-          const img = document.getElementById('about-photo');
-          img.src = data.images['profile'];
-          img.style.display = 'block';
-          document.getElementById('about-photo-placeholder').style.display = 'none';
-        }
-        for (let i = 1; i <= 6; i++) {
-          const key = 'gallery-' + i;
-          if (data.images[key]) {
-            const img  = document.getElementById('gallery-img-' + i);
-            const slot = document.getElementById('gallery-slot-' + i);
-            img.src = data.images[key];
-            img.classList.add('loaded');
-            if (slot) {
-              const icon  = slot.querySelector('.slot-icon');
-              const label = slot.querySelector('.slot-label');
-              if (icon)  icon.style.display  = 'none';
-              if (label) label.style.display = 'none';
-            }
-          }
-        }
-      }
-
-      /* 영상 복원 */
-      if (data.videos) {
-        for (let i = 1; i <= 2; i++) {
-          const key = 'video-' + i;
-          if (data.videos[key]) {
-            const vid  = document.getElementById('video-' + i);
-            const slot = document.getElementById('video-slot-' + i);
-            vid.src = data.videos[key];
-            vid.classList.add('loaded');
-            if (slot) {
-              const icon  = slot.querySelector('.v-icon');
-              const ph    = document.getElementById('video-placeholder-' + i);
-              if (icon) icon.style.display = 'none';
-              if (ph)   ph.style.display   = 'none';
-            }
-          }
-        }
-      }
-    }
-
-    /* ================================================================
-       폼 전송
-    ================================================================ */
     function handleFormSubmit(event) {
-      event.preventDefault();
-      const sender  = document.getElementById('contact-form-sender').value.trim();
-      const email   = document.getElementById('contact-form-email-input').value.trim();
+      const sender = document.getElementById('contact-form-sender').value.trim();
+      const email = document.getElementById('contact-form-email-input').value.trim();
       const message = document.getElementById('contact-form-message').value.trim();
-      if (!sender || !email || !message) return;
-      alert(sender + '님, 메시지가 전달되었습니다. 감사합니다!');
-      event.target.reset();
+      if (!sender || !email || !message) {
+        alert('모든 항목을 입력해 주세요.');
+        event.preventDefault();
+        return false;
+      }
+      return true;
     }
 
-    /* ================================================================
-       토스트 알림
-    ================================================================ */
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove('show'), 2400);
-    }
-
-    /* ================================================================
-       초기화
-    ================================================================ */
-    loadData();
+    document.addEventListener('click', event => {
+      if (event.target.closest('#mobile-menu a')) {
+        closeMobileMenu();
+      }
+    });
   </script>
 
 </body>
 </html>
+
